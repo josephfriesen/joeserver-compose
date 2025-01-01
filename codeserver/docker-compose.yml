@@ -1,6 +1,3 @@
-# file path /mnt/user/appdata/portainer/compose/27/docker-compose.yml
-# stack ID  27
-
 services:
   code-server-ts:
     extends: 
