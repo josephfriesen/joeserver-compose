@@ -1,0 +1,37 @@
+# file path /mnt/user/appdata/portainer/compose/4/docker-compose.yml
+# stack ID  4
+
+services:
+  qbt-ts:
+    extends: 
+      file: ../ts-compose.yml
+      service: ts
+    container_name: qbt-ts
+    hostname: qbt
+    volumes:
+      - /mnt/user/appdata/tailscale/qbittorrent:/config
+      - /dev/net/tun:/dev/net/tun
+
+  qbt:
+    image: ghcr.io/hotio/qbittorrent:latest
+    network_mode: service:qbt-ts
+    container_name: qbt
+    depends_on:
+      - qbt-ts
+    environment:
+      - PUID=99
+      - PGID=100
+      - TZ=America/Los_Angeles
+    labels:
+      - "net.unraid.docker.icon=https://hotio.dev/webhook-avatars/qbittorrent.png"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://qbt.squeaker-boga.ts.net"
+    volumes:
+      - /mnt/user/downloads:/downloads
+      - /mnt/user/appdata/qbittorrent:/config
+    restart: unless-stopped
+
+secrets:
+  ts_authkey:
+    file: /mnt/user/appdata/tailscale/ts_authkey
+ 

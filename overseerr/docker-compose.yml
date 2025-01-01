@@ -1,0 +1,36 @@
+# file path /mnt/user/appdata/portainer/compose/16/docker-compose.yml
+# stack ID  16
+
+services:
+  overseerr-ts:
+    extends: 
+      file: ../ts-compose.yml
+      service: ts
+    container_name: overseerr-ts
+    hostname: overseerr
+    volumes:
+      - /mnt/user/appdata/tailscale/overseerr:/config
+      - /dev/net/tun:/dev/net/tun
+    
+  overseerr:
+    image: lscr.io/linuxserver/overseerr
+    network_mode: service:overseerr-ts
+    container_name: overseerr
+    depends_on:
+      - overseerr-ts
+    environment:
+      - PUID=99
+      - PGID=100
+      - TZ=America/Los_Angeles
+      - UMASK=022
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/overseerr-logo.png"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://overseerr.squeaker-boga.ts.net"
+    volumes:
+      - /mnt/user/appdata/overseerr:/config
+    restart: unless-stopped
+
+secrets:
+  ts_authkey:
+    file: /mnt/user/appdata/tailscale/ts_authkey

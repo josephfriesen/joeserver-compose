@@ -1,0 +1,42 @@
+# file path /mnt/user/appdata/portainer/compose/27/docker-compose.yml
+# stack ID  27
+
+services:
+  code-server-ts:
+    extends: 
+      file: ../ts-compose.yml
+      service: ts
+    container_name: code-server-ts
+    hostname: code
+    volumes:
+      - /mnt/user/appdata/tailscale/codeserver:/config
+      - /dev/net/tun:/dev/net/tun
+ 
+  codeserver:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    network_mode: service:code-server-ts
+    depends_on: 
+      - code-server-ts
+    environment:
+      - PUID=99
+      - PGID=100
+      - TZ=America/Los_Angeles
+      # https://docs.linuxserver.io/images/docker-code-server/#docker-compose-recommended-click-here-for-more-info
+      # - PASSWORD=password #optional
+      # - HASHED_PASSWORD= #optional
+      # - SUDO_PASSWORD=password #optional
+      # - SUDO_PASSWORD_HASH= #optional
+      # - PROXY_DOMAIN=code-server.my.domain #optional
+      # - DEFAULT_WORKSPACE=/config/workspace #optional
+    labels:
+      - "net.unraid.docker.icon=https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/768px-Visual_Studio_Code_1.35_icon.svg.png"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://code.squeaker-boga.ts.net"
+    volumes:
+      - /mnt/user/appdata/codeserver:/config
+    restart: unless-stopped
+
+secrets:
+  ts_authkey:
+    file: /mnt/user/appdata/tailscale/ts_authkey

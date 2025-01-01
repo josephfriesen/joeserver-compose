@@ -1,0 +1,43 @@
+# file path /mnt/user/appdata/portainer/compose/8/docker-compose.yml
+# stack ID  8
+
+services:
+  navidrome-ts:
+    extends: 
+      file: ../ts-compose.yml
+      service: ts
+    container_name: navidrome-ts
+    hostname: tunes
+    volumes:
+      - /mnt/user/appdata/tailscale/navidrome:/config
+      - /dev/net/tun:/dev/net/tun
+ 
+  navidrome:
+    image: deluan/navidrome
+    network_mode: service:navidrome-ts
+    container_name: navidrome
+    depends_on: 
+      - navidrome-ts
+
+    environment:
+      - PUID=99
+      - PGID=100
+      - TZ=America/Los_Angeles
+      - ND_SCANSCHEDULE=1m
+      - ND_LOGLEVEL=info
+      - ND_SESSIONTIMEOUT=24h
+      - ND_IMAGECACHESIZE=200MB
+      - ND_LASTFM_APIKEY=f7d331ae56135f9beb2bd66376eee3ab
+      - ND_LASTFM_SECRET=9db067cf3d3edf5d8959f3f660ffe0c0
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/navidrome.png"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://tunes.squeaker-boga.ts.net"
+    volumes:
+      - /mnt/user/Media/MUSIC:/music
+      - /mnt/user/appdata/navidrome:/data
+    restart: unless-stopped
+
+secrets:
+  ts_authkey:
+    file: /mnt/user/appdata/tailscale/ts_authkey

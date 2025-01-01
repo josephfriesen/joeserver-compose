@@ -1,0 +1,44 @@
+# file path /mnt/user/appdata/portainer/compose/11/docker-compose.yml
+# stack ID  11
+
+services:
+  vault-ts:
+    extends:
+      file: ../ts-compose.yml
+      service: ts
+    container_name: vault-ts
+    hostname: vault
+
+    volumes:
+      - /mnt/user/appdata/tailscale/vault:/config
+      - /dev/net/tun:/dev/net/tun
+    
+  vault:
+    image: vaultwarden/server
+    network_mode: service:vault-ts
+    container_name: vault
+    depends_on:
+      - vault-ts
+    environment:
+      - PUID=99
+      - PGID=100
+      - TZ=America/Los_Angeles
+      - SERVER_ADMIN_EMAIL=iprefertheremix@gmail.com
+      - SIGNUPS_ALLOWED=false
+      - INVITATIONS_ALLOWED=true
+      - WEBSOCKET_ENABLED=false
+      # enable admin page by uncommenting this. get a real token if you do.
+      # if after enabling, to disable again need to stop server, remove ADMIN_TOKEN env variable, and remove ADMIN_TOKEN from config.json
+      # see: https://github-wiki-see.page/m/dani-garcia/vaultwarden/wiki/Enabling-admin-page
+      # - ADMIN_TOKEN=insecure_token_dont_do_this
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/bitwardenrs.png"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://vault.squeaker-boga.ts.net"
+    volumes:
+      - /mnt/user/appdata/bitwarden:/data
+    restart: unless-stopped
+
+secrets:
+  ts_authkey:
+    file: /mnt/user/appdata/tailscale/ts_authkey

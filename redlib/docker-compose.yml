@@ -1,0 +1,43 @@
+# file path /mnt/user/appdata/portainer/compose/14/docker-compose.yml
+# stack ID  14
+
+services:
+  redlib-ts:
+    extends: 
+      file: ../ts-compose.yml
+      service: ts
+    container_name: redlib-ts
+    hostname: redlib
+    volumes:
+      - /mnt/user/appdata/tailscale/redlib:/config
+      - /dev/net/tun:/dev/net/tun
+    
+  redlib:
+    image: quay.io/redlib/redlib:latest
+    network_mode: service:redlib-ts
+    container_name: redlib
+    depends_on:
+      - redlib-ts
+    environment:
+      PUID: 99
+      PGID: 100
+      TZ: America/Los_Angeles
+      REDLIB_DEFAULT_THEME: dracula
+      REDLIB_ROBOTS_DISABLE_INDEXING: on
+      REDLIB_BANNER: joe.server Redlib -- Reddit Frontend
+      REDLIB_DEFAULT_LAYOUT: compact
+      REDLIB_DEFAULT_POST_SORT: new
+      REDLIB_DEFAULT_COMMENT_SORT: top
+      REDLIB_DEFAULT_SHOW_NSFW: on
+      REDLIB_DEFAULT_AUTOPLAY_VIDEOS: off
+      REDLIB_DEFAULT_SUBSCRIPTIONS: ripcity+unraid+selfhosted
+      REDLIB_DEFAULT_DISABLE_REDDIT_CONFIRMATION: on
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/Joshndroid/joshndroid-unraid-docker-templates/main/icons/redlib.png"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://redlib.squeaker-boga.ts.net"
+    restart: unless-stopped
+
+secrets:
+  ts_authkey:
+    file: /mnt/user/appdata/tailscale/ts_authkey

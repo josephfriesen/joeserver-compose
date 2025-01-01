@@ -1,0 +1,40 @@
+# file path /mnt/user/appdata/portainer/compose/25/docker-compose.yml
+# stack ID  25
+
+services:
+  slskd-ts:
+    extends: 
+      file: ../ts-compose.yml
+      service: ts
+    container_name: slskd-ts
+    hostname: slskd
+    volumes:
+      - /mnt/user/appdata/tailscale/slskd:/config
+      - /dev/net/tun:/dev/net/tun
+ 
+  slskd:
+    image: slskd/slskd
+    network_mode: service:slskd-ts
+    container_name: slskd
+    depends_on: 
+      - slskd-ts
+
+    environment:
+      - PUID=99
+      - PGID=100
+      - TZ=America/Los_Angeles
+      - SLSKD_REMOTE_CONFIGURATION=true
+      - SLSKD_SHARED_DIR=/music
+    labels:
+      - "net.unraid.docker.icon=https://avatars.githubusercontent.com/u/76762370?s=200&v=4"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://slskd.squeaker-boga.ts.net"
+    volumes:
+      - /mnt/user/Media/MUSIC:/music
+      - /mnt/user/downloads/slsk:/downloads
+      - /mnt/user/appdata/slskd:/app
+    restart: unless-stopped
+
+secrets:
+  ts_authkey:
+    file: /mnt/user/appdata/tailscale/ts_authkey

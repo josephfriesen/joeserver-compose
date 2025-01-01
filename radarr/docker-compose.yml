@@ -1,0 +1,39 @@
+# file path /mnt/user/appdata/portainer/compose/10/docker-compose.yml
+# stack ID  10
+
+services:
+  radarr-ts:
+    extends: 
+      file: ../ts-compose.yml
+      service: ts
+    container_name: radarr-ts
+    hostname: radarr
+    volumes:
+      - /mnt/user/appdata/tailscale/radarr:/config
+      - /dev/net/tun:/dev/net/tun
+    
+  radarr:
+    image: hotio/radarr
+    network_mode: service:radarr-ts
+    container_name: radarr
+    depends_on:
+      - radarr-ts
+    environment:
+      - PUID=99
+      - PGID=100
+      - TZ=America/Los_Angeles
+    labels:
+      - "net.unraid.docker.icon=https://hotio.dev/webhook-avatars/radarr.png"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://radarr.squeaker-boga.ts.net"
+    volumes:
+      - /mnt/user/downloads:/downloads
+      - /mnt/user/downloads/completed:/downloads/completed
+      - /mnt/user/downloads:/data
+      - /mnt/user/Media/MOVIES:/movies
+      - /mnt/user/appdata/radarr:/config
+    restart: unless-stopped
+    
+secrets:
+  ts_authkey:
+    file: /mnt/user/appdata/tailscale/ts_authkey

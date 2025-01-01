@@ -1,0 +1,65 @@
+# file path /mnt/user/appdata/portainer/compose/31/docker-compose.yml
+# stack ID  31
+
+services:
+  searxng-ts:
+    extends: 
+      file: ../ts-compose.yml
+      service: ts
+    container_name: searxng-ts
+    hostname: search
+    volumes:
+      - /mnt/user/appdata/tailscale/searxng:/config
+      - /dev/net/tun:/dev/net/tun
+    
+  searxng:
+    container_name: searxng
+    image: docker.io/searxng/searxng:latest
+    network_mode: service:searxng-ts
+    depends_on:
+      - searxng-ts
+
+    volumes:
+      - /mnt/user/appdata/searxng:/etc/searxng:rw
+    environment:
+      - TZ=America/Los_Angeles
+      - SEARXNG_BASE_URL=https://search.squeaker-boga.ts.net
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    restart: unless-stopped
+
+  redis:
+    container_name: redis
+    image: docker.io/valkey/valkey:8-alpine
+    command: valkey-server --save 30 1 --loglevel warning
+    restart: unless-stopped
+    volumes:
+      - valkey-data2:/data
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
+volumes:
+  valkey-data2:
+
+
+secrets:
+  ts_authkey:
+    file: /mnt/user/appdata/tailscale/ts_authkey
