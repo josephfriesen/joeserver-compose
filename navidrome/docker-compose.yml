@@ -24,8 +24,8 @@ services:
       - ND_LOGLEVEL=info
       - ND_SESSIONTIMEOUT=24h
       - ND_IMAGECACHESIZE=200MB
-      - ND_LASTFM_APIKEY=f7d331ae56135f9beb2bd66376eee3ab
-      - ND_LASTFM_SECRET=9db067cf3d3edf5d8959f3f660ffe0c0
+      - ND_LASTFM_APIKEY: /run/secrets/lastfm_apikey
+      - ND_LASTFM_SECRET: /run/secrets/lastfm_secret
     labels:
       - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/navidrome.png"
       - "net.unraid.docker.managed=dockerman"
@@ -38,3 +38,7 @@ services:
 secrets:
   ts_authkey:
     file: /mnt/user/appdata/tailscale/ts_authkey
+  lastfm_apikey:
+    file: /mnt/user/appdata/navidrome/lastfm_apikey
+  lastfm_secret:
+    file: /mnt/user/appdata/navidrome/lastfm_secret
