@@ -15,17 +15,16 @@ services:
     container_name: navidrome
     depends_on: 
       - navidrome-ts
-
     environment:
-      - PUID=99
-      - PGID=100
-      - TZ=America/Los_Angeles
-      - ND_SCANSCHEDULE=1m
-      - ND_LOGLEVEL=info
-      - ND_SESSIONTIMEOUT=24h
-      - ND_IMAGECACHESIZE=200MB
-      - ND_LASTFM_APIKEY: /run/secrets/lastfm_apikey
-      - ND_LASTFM_SECRET: /run/secrets/lastfm_secret
+      PUID: 99
+      PGID: 100
+      TZ: America/Los_Angeles
+      ND_SCANSCHEDULE: 1m
+      ND_LOGLEVEL: info
+      ND_SESSIONTIMEOUT: 24h
+      ND_IMAGECACHESIZE: 200MB
+      ND_LASTFM_APIKEY: /run/secrets/lastfm_apikey
+      ND_LASTFM_SECRET: /run/secrets/lastfm_secret
     labels:
       - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/navidrome.png"
       - "net.unraid.docker.managed=dockerman"
