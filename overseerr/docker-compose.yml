@@ -27,7 +27,3 @@ services:
     volumes:
       - /mnt/user/appdata/overseerr:/config
     restart: unless-stopped
-
-secrets:
-  ts_authkey:
-    file: /mnt/user/appdata/tailscale/ts_authkey

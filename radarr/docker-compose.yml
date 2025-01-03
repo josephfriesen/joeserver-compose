@@ -30,7 +30,4 @@ services:
       - /mnt/user/Media/MOVIES:/movies
       - /mnt/user/appdata/radarr:/config
     restart: unless-stopped
-    
-secrets:
-  ts_authkey:
-    file: /mnt/user/appdata/tailscale/ts_authkey
+ 

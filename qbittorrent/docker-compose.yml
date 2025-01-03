@@ -27,8 +27,3 @@ services:
       - /mnt/user/downloads:/downloads
       - /mnt/user/appdata/qbittorrent:/config
     restart: unless-stopped
-
-secrets:
-  ts_authkey:
-    file: /mnt/user/appdata/tailscale/ts_authkey
- 

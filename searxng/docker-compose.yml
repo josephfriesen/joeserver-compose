@@ -55,8 +55,3 @@ services:
 
 volumes:
   valkey-data2:
-
-
-secrets:
-  ts_authkey:
-    file: /mnt/user/appdata/tailscale/ts_authkey

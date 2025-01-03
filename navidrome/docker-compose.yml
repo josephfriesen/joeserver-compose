@@ -1,6 +1,6 @@
 services:
   navidrome-ts:
-    extends: 
+    extends:
       file: ../ts-compose.yml
       service: ts
     container_name: navidrome-ts
@@ -8,12 +8,12 @@ services:
     volumes:
       - /mnt/user/appdata/tailscale/navidrome:/config
       - /dev/net/tun:/dev/net/tun
- 
+
   navidrome:
     image: deluan/navidrome
     network_mode: service:navidrome-ts
     container_name: navidrome
-    depends_on: 
+    depends_on:
       - navidrome-ts
     environment:
       PUID: 99
@@ -23,8 +23,7 @@ services:
       ND_LOGLEVEL: info
       ND_SESSIONTIMEOUT: 24h
       ND_IMAGECACHESIZE: 200MB
-      ND_LASTFM_APIKEY: /run/secrets/lastfm_apikey
-      ND_LASTFM_SECRET: /run/secrets/lastfm_secret
+    env_file: /mnt/user/appdata/navidrome/.env
     labels:
       - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/navidrome.png"
       - "net.unraid.docker.managed=dockerman"
@@ -33,11 +32,3 @@ services:
       - /mnt/user/Media/MUSIC:/music
       - /mnt/user/appdata/navidrome:/data
     restart: unless-stopped
-
-secrets:
-  ts_authkey:
-    file: /mnt/user/appdata/tailscale/ts_authkey
-  lastfm_apikey:
-    file: /mnt/user/appdata/navidrome/lastfm_apikey
-  lastfm_secret:
-    file: /mnt/user/appdata/navidrome/lastfm_secret

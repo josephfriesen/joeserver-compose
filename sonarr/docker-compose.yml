@@ -28,7 +28,4 @@ services:
       - /mnt/user/Media/TEEV:/tv
       - /mnt/user/appdata/sonarr:/config
     restart: unless-stopped
-    
-secrets:
-  ts_authkey:
-    file: /mnt/user/appdata/tailscale/ts_authkey
+ 

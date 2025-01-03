@@ -31,7 +31,3 @@ services:
       - /mnt/user/downloads/slsk:/downloads
       - /mnt/user/appdata/slskd:/app
     restart: unless-stopped
-
-secrets:
-  ts_authkey:
-    file: /mnt/user/appdata/tailscale/ts_authkey
