@@ -18,11 +18,11 @@ services:
     environment:
       PUID: 99
       PGID: 100
-      TZ: America/Los_Angeles
-      ND_SCANSCHEDULE: 1m
-      ND_LOGLEVEL: info
-      ND_SESSIONTIMEOUT: 24h
-      ND_IMAGECACHESIZE: 200MB
+      TZ: "America/Los_Angeles"
+      ND_SCANSCHEDULE: "1m"
+      ND_LOGLEVEL: "info"
+      ND_SESSIONTIMEOUT: "24h"
+      ND_IMAGECACHESIZE: "200MB"
     env_file: /mnt/user/appdata/navidrome/.env
     labels:
       - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/navidrome.png"
@@ -32,3 +32,4 @@ services:
       - /mnt/user/Media/MUSIC:/music
       - /mnt/user/appdata/navidrome:/data
     restart: unless-stopped
+
