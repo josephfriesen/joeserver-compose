@@ -15,10 +15,8 @@ services:
     container_name: slskd
     depends_on: 
       - slskd-ts
-
+    user: "99:100"
     environment:
-      - PUID=99
-      - PGID=100
       - TZ=America/Los_Angeles
       - SLSKD_REMOTE_CONFIGURATION=true
       - SLSKD_SHARED_DIR=/music
