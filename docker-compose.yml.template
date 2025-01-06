@@ -1,0 +1,27 @@
+services:
+  {{service}}-ts:
+    extends:
+      file: ../ts-compose.yml
+      service: ts
+    container_name: {{service}}-ts
+    hostname: {{service}}
+    volumes:
+      - /mnt/user/appdata/tailscale/{{service}}:/config
+
+  {{service}}:
+    image: {{image}}
+    network_mode: service:{{service}}-ts
+    container_name: {{service}}
+    depends_on:
+      - {{service}}-ts
+    environment:
+      TZ: America/Los_Angeles 
+      # ... env vars
+    volumes:
+      - /mnt/user/appdata/{{service}}:/config
+      # ... any other volume mappings
+    labels:
+      - "net.unraid.docker.icon={{url to service icon}}"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://{{service}}.squeaker-boga.ts.net"
+    restart: unless-stopped

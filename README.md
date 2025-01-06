@@ -1,10 +1,10 @@
-#### joeserver docker-compose files
+## joeserver docker-compose files
 
 Repository for our joeserver docker-compose stacks. Each is added as a node on our tailscale VPN and available to machines on our tailnet via MagicDNS url `https://{hostname}.squeaker-boga.ts.net`.
 
 ~~We're using Portainer for managing our stacks (which is probably more trouble than it's worth but we're relying on its API for healthchecks at the moment).~~ The tyranny of Portainer is over we're just managing these compose stacks ourselves and all the happier for it.
 
-Assumed file structure is:
+#### File structure
 
 - Docker compose files live at `joeserver-compose/{service}/docker-compose.yml`. When making a change to a compose file, can make changes to these files, spin up `docker compose` make sure the changes are working then check changes in.
 - Tailscale `ts` service config (`./ts-compose.yml`) lives at the project root `joeserver-compose/ts-compose.yml`.
@@ -19,3 +19,10 @@ Assumed file structure is:
 - Each ts service needs a `serve.json` configuration file, essentially to tell the ts sidecar service which container port to forward traffic to.
   - For each service, we have a subfolder in the `appdata/tailscale` folder that will contain the `serve.json` file and the Tailscale state. Set up a volume mapping to this directory on the server to the container folder `/config` in each tailscale sidecar service.
   - The `serve.json` files live here in the repo, for each service set up a hard symlink in `appdata/tailscale/{service}` subfolder to link to this file.
+
+#### Adding a new compose stack
+- Create `/{service}` subfolder, copy `docker-compose.yml.template`, `serve.json.template` to `/{service}/docker-compose.yml`, `/{service}/serve.json.template`.
+- Replace the placeholder values in `docker-compose.yml` and `serve.json`. Set the compose configuration as needed.
+- Make new subdirectory `/appdata/tailscale/{service}`. In subdirectory, `ln joeserver-compose/{service}/serve.json`.
+- In Unraid Compose Manager, add new compose stack with name `{service}`, stack directory `joeserver-compose/service`. In the stack that is created, confirm that the compose file there matches the contents of the `docker-compose.yml` file (no reason it shouldn't).
+- Click `Compose Up`, wait for it to spin up, check logs. Once `{service}-ts` has authenticated with Tailscale, check Tailscale admin console for service to be listed. Then hit the tailnet URL `https://{service}.squeaker-boga.ts.net`. If it's working, should take a few seconds to load while generating cert.

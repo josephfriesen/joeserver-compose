@@ -1,0 +1,32 @@
+services:
+  dozzle-ts:
+    extends:
+      file: ../ts-compose.yml
+      service: ts
+    container_name: dozzle-ts
+    hostname: dozzle
+    volumes:
+      - /mnt/user/appdata/tailscale/dozzle:/config
+
+  dozzle:
+    image: amir20/dozzle:latest
+    network_mode: service:dozzle-ts
+    container_name: dozzle
+    depends_on:
+      - dozzle-ts
+    environment:
+      TZ: America/Los_Angeles 
+      DOZZLE_AUTH_PROVIDER: simple
+      DOZZLE_AUTH_TTL: 72h
+      DOZZLE_HOSTNAME: dozzle.squeaker-boga.ts.net
+      DOZZLE_ENABLE_ACTIONS: true
+      DOZZLE_NO_ANALYTICS: true
+      DOZZLE_LEVEL: debug
+    volumes:
+      - /mnt/user/appdata/dozzle:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "net.unraid.docker.icon=https://developer.asustor.com/uploadIcons/0020_117518_1660879931_dozzle_256.png"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://dozzle.squeaker-boga.ts.net"
+    restart: unless-stopped
