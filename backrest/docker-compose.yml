@@ -1,0 +1,35 @@
+services:
+  backrest-ts:
+    extends:
+      file: ../ts-compose.yml
+      service: ts
+    container_name: backrest-ts
+    hostname: backrest
+    volumes:
+      - /mnt/user/appdata/tailscale/backrest:/config
+      - /dev/net/tun:/dev/net/tun
+
+  backrest:
+    image: garethgeorge/backrest:latest
+    network_mode: service:backrest-ts
+    container_name: backrest
+    depends_on:
+      - backrest-ts
+    volumes:
+      - /mnt/user/appdata/backrest/data:/data
+      - /mnt/user/appdata/backrest/config:/config
+      - /mnt/cache/appdata/backrest/cache:/cache
+      - /mnt/user/appdata:/userdata
+      - /mnt/user/Media:/media
+      - /mnt/user/cloud:/cloud
+      - /mnt/user/system/Docker:/docker
+    environment:
+      - BACKREST_DATA=/data
+      - BACKREST_CONFIG=/config/config.json
+      - XDG_CACHE_HOME=/cache
+      - TZ=America/Los_Angeles
+    labels:
+      - "net.unraid.docker.icon=https://avatars.githubusercontent.com/u/76762370?s=200&v=4"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://backrest.squeaker-boga.ts.net"
+    restart: unless-stopped
