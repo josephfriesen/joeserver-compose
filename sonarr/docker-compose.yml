@@ -7,8 +7,7 @@ services:
     hostname: sonarr
     volumes:
       - /mnt/user/appdata/tailscale/sonarr:/config
-      - /dev/net/tun:/dev/net/tun
-    
+ 
   sonarr:
     image: lscr.io/linuxserver/sonarr
     network_mode: service:sonarr-ts

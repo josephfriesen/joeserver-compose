@@ -7,7 +7,6 @@ services:
     hostname: tunes
     volumes:
       - /mnt/user/appdata/tailscale/navidrome:/config
-      - /dev/net/tun:/dev/net/tun
 
   navidrome:
     image: deluan/navidrome

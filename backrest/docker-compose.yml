@@ -7,7 +7,6 @@ services:
     hostname: backrest
     volumes:
       - /mnt/user/appdata/tailscale/backrest:/config
-      - /dev/net/tun:/dev/net/tun
 
   backrest:
     image: garethgeorge/backrest:latest

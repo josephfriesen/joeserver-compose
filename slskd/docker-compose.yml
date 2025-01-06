@@ -7,7 +7,6 @@ services:
     hostname: slskd
     volumes:
       - /mnt/user/appdata/tailscale/slskd:/config
-      - /dev/net/tun:/dev/net/tun
  
   slskd:
     image: slskd/slskd

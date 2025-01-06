@@ -7,8 +7,7 @@ services:
     hostname: vault
     volumes:
       - /mnt/user/appdata/tailscale/vaultwarden:/config
-      - /dev/net/tun:/dev/net/tun
-    
+ 
   vault:
     image: vaultwarden/server
     network_mode: service:vault-ts

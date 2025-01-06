@@ -7,7 +7,6 @@ services:
     hostname: qbt
     volumes:
       - /mnt/user/appdata/tailscale/qbittorrent:/config
-      - /dev/net/tun:/dev/net/tun
 
   qbt:
     image: ghcr.io/hotio/qbittorrent:latest

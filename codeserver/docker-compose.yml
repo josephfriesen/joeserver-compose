@@ -7,7 +7,6 @@ services:
     hostname: code
     volumes:
       - /mnt/user/appdata/tailscale/codeserver:/config
-      - /dev/net/tun:/dev/net/tun
  
   codeserver:
     image: lscr.io/linuxserver/code-server:latest

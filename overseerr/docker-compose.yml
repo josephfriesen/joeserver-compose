@@ -7,8 +7,7 @@ services:
     hostname: overseerr
     volumes:
       - /mnt/user/appdata/tailscale/overseerr:/config
-      - /dev/net/tun:/dev/net/tun
-    
+ 
   overseerr:
     image: lscr.io/linuxserver/overseerr
     network_mode: service:overseerr-ts

@@ -7,8 +7,7 @@ services:
     hostname: redlib
     volumes:
       - /mnt/user/appdata/tailscale/redlib:/config
-      - /dev/net/tun:/dev/net/tun
-    
+ 
   redlib:
     image: quay.io/redlib/redlib:latest
     network_mode: service:redlib-ts

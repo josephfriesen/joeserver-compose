@@ -7,8 +7,7 @@ services:
     hostname: search
     volumes:
       - /mnt/user/appdata/tailscale/searxng:/config
-      - /dev/net/tun:/dev/net/tun
-    
+ 
   searxng:
     container_name: searxng
     image: docker.io/searxng/searxng:latest
@@ -34,8 +33,8 @@ services:
         max-file: "1"
     restart: unless-stopped
 
-  redis:
-    container_name: redis
+  searxng-redis:
+    container_name: searxng-redis
     image: docker.io/valkey/valkey:8-alpine
     command: valkey-server --save 30 1 --loglevel warning
     restart: unless-stopped
