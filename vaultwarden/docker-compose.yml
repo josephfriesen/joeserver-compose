@@ -5,9 +5,8 @@ services:
       service: ts
     container_name: vault-ts
     hostname: vault
-
     volumes:
-      - /mnt/user/appdata/tailscale/vault:/config
+      - /mnt/user/appdata/tailscale/vaultwarden:/config
       - /dev/net/tun:/dev/net/tun
     
   vault:

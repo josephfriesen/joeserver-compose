@@ -22,7 +22,8 @@ services:
       - /mnt/user/appdata:/userdata
       - /mnt/user/Media:/media
       - /mnt/user/cloud:/cloud
-      - /mnt/user/system/Docker:/docker
+      - /mnt/user/system/:/system
+      - /mnt/user/backup:/backup
     environment:
       - BACKREST_DATA=/data
       - BACKREST_CONFIG=/config/config.json

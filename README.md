@@ -16,3 +16,6 @@ Assumed file structure is:
     - Make changes to `./ts-compose.yml`
     - Stop and redeploy all stacks using the tailscale sidecar container (run appropriate `joeserver-tools` cmd).
     - If all is well, check changes into git.
+- Each ts service needs a `serve.json` configuration file, essentially to tell the ts sidecar service which container port to forward traffic to.
+  - For each service, we have a subfolder in the `appdata/tailscale` folder that will contain the `serve.json` file and the Tailscale state. Set up a volume mapping to this directory on the server to the container folder `/config` in each tailscale sidecar service.
+  - The `serve.json` files live here in the repo, for each service set up a hard symlink in `appdata/tailscale/{service}` subfolder to link to this file.
