@@ -1,0 +1,29 @@
+services:
+  audiobookshelf-ts:
+    extends:
+      file: ../ts-compose.yml
+      service: ts
+    container_name: audiobookshelf-ts
+    hostname: audiobookshelf
+    volumes:
+      - /mnt/user/appdata/tailscale/audiobookshelf:/config
+
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    network_mode: service:audiobookshelf-ts
+    container_name: audiobookshelf
+    depends_on:
+      - audiobookshelf-ts
+    environment:
+      TZ: America/Los_Angeles 
+    user: "99:100"
+    volumes:
+      - /mnt/user/appdata/audiobookshelf/config:/config
+      - /mnt/user/appdata/audiobookshelf/metadata:/metadata
+      - /mnt/user/Media/AUDIOBOOKS:/audiobooks
+      - /mnt/user/Media/MUSIC/podcasts:/podcasts
+    labels:
+      - "net.unraid.docker.icon=https://www.audiobookshelf.org/Logo.png"
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=https://audiobookshelf.squeaker-boga.ts.net"
+    restart: unless-stopped

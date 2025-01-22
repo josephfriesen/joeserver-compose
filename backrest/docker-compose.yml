@@ -18,7 +18,8 @@ services:
       - /mnt/user/appdata/backrest/data:/data
       - /mnt/user/appdata/backrest/config:/config
       - /mnt/cache/appdata/backrest/cache:/cache
-      - /mnt/user/appdata:/userdata
+      - /mnt/user/appdata:/appdata
+      - /mnt/cache/appdata:/appdata-cache
       - /mnt/user/Media:/media
       - /mnt/user/cloud:/cloud
       - /mnt/user/system/:/system
