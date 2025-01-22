@@ -1,5 +1,13 @@
 ## joeserver docker-compose files
 
+### DEPRECATED, don't need this anymore!
+
+Hooray, with release of Unraid v7.0.0, docker containers on unraid have built-in support for Tailscale, installing an app via docker includes "Use Tailscale" option, which will alter the container entrypoint to first download Tailscale within the container, spin up Tailscale, then prompt for authentication (no more API keys to auth, must be done manually).
+
+For now, just keeping services Dozzle and Searxng as docker-compose stacks rather than an Unraid docker container. Dozzle for some reason is the only service that gave a command not found when trying to install Tailscale on start, and Searxng requires a separate Redis instance so keeping it as a compose stack makes sense. These will continue to be compose stacks with a Tailscale sidecar container. The rest of the compose files we'll keep here, if we need to delete/create/edit a service config within Unraid we have these configs as a reference.
+
+### README (for historical purposes, I suppose?)
+
 Repository for our joeserver docker-compose stacks. Each is added as a node on our tailscale VPN and available to machines on our tailnet via MagicDNS url `https://{hostname}.squeaker-boga.ts.net`.
 
 ~~We're using Portainer for managing our stacks (which is probably more trouble than it's worth but we're relying on its API for healthchecks at the moment).~~ The tyranny of Portainer is over we're just managing these compose stacks ourselves and all the happier for it.
