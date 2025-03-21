@@ -33,3 +33,4 @@ services:
     volumes:
       - /mnt/user/appdata/bitwarden:/data
     restart: unless-stopped
+

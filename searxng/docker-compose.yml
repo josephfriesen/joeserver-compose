@@ -1,20 +1,7 @@
 services:
-  searxng-ts:
-    extends: 
-      file: ../ts-compose.yml
-      service: ts
-    container_name: searxng-ts
-    hostname: search
-    volumes:
-      - /mnt/user/appdata/tailscale/searxng:/config
- 
   searxng:
-    container_name: searxng
+    container_name: search
     image: docker.io/searxng/searxng:latest
-    network_mode: service:searxng-ts
-    depends_on:
-      - searxng-ts
-
     volumes:
       - /mnt/user/appdata/searxng:/etc/searxng:rw
     environment:
@@ -26,12 +13,17 @@ services:
       - CHOWN
       - SETGID
       - SETUID
+    ports:
+      - '3818:8080'
     logging:
       driver: "json-file"
       options:
         max-size: "1m"
         max-file: "1"
     restart: unless-stopped
+    labels:
+      - tsdproxy.enable=true
+      - tsdproxy.ephemeral=false
 
   searxng-redis:
     container_name: searxng-redis
